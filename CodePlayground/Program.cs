@@ -62,154 +62,220 @@ namespace CodePlayground
             return GetEnumerator();
         }
     }
-    public static class MyLinqMethods
+    //public static class MyLinqMethods
+    //{
+    //    public static IEnumerable<T> Where<T>(
+    //        this IEnumerable<T> inputSequence, 
+    //        Func<T, bool> predicate)
+    //    {
+    //        foreach (T item in inputSequence)
+    //            if (predicate(item))
+    //                yield return item;
+    //    }
+
+    //    public static IEnumerable<TResult> Select<TSource, TResult>(
+    //        this IEnumerable<TSource> inputSequence, 
+    //        Func<TSource, TResult> transform)
+    //    {
+    //        foreach (TSource item in inputSequence)
+    //            yield return transform(item);
+    //    }
+
+    //    public static IEnumerable<TResult> Select<TSource, TResult>(
+    //        this IEnumerable<TSource> inputSequence,
+    //        Func<TSource, int, TResult> transform)
+    //    {
+    //        int index = 0;
+    //        foreach (TSource item in inputSequence)
+    //            yield return transform(item, index++);
+    //    }
+
+    //    public static bool Any<T>(this IEnumerable<T> sequence)
+    //    {
+    //        return sequence.GetEnumerator().MoveNext();
+    //    }
+    //    public static int Count<T>(this IEnumerable<T> sequence)
+    //    {
+    //        int count = 0;
+    //        foreach (var item in sequence)
+    //            count++;
+    //        return count;
+    //    }
+
+    //    public static bool Any<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
+    //    {
+    //        return sequence.Where(predicate).GetEnumerator().MoveNext();
+    //    }
+
+    //    public static int Count<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
+    //    {
+    //        return sequence.Where(predicate).Count();
+    //    }
+
+    //    public static int Sum(this IEnumerable<int> sequence)
+    //    {
+    //        var sum = 0;
+    //        foreach (var item in sequence)
+    //            sum += item;
+    //        return sum;
+    //    }
+
+    //    public static int Sum(this IEnumerable<int> sequence, int seed)
+    //    {
+    //        var sum = seed;
+    //        foreach (var item in sequence)
+    //            sum += item;
+    //        return sum;
+    //    }
+
+    //    public static int Aggregate(this IEnumerable<int> sequence, Func<int, int, int> func)
+    //    {
+    //        var sum = 0;
+    //        foreach (var item in sequence)
+    //            sum = func(sum, item);
+    //        return sum;
+    //    }
+
+    //    public static int Aggregate(this IEnumerable<int> sequence, int seed, Func<int, int, int> func)
+    //    {
+    //        var sum = seed;
+    //        foreach (var item in sequence)
+    //            sum = func(sum, item);
+    //        return sum;
+    //    }
+
+    //    public static TAccumulate Aggregate<TSource, TAccumulate>(this IEnumerable<TSource> sequence, Func<TAccumulate, TSource, TAccumulate> func)
+    //    {
+    //        var sum = default(TAccumulate);
+    //        foreach (var item in sequence)
+    //            sum = func(sum, item);
+    //        return sum;
+    //    }
+
+    //    public static TAccumulate Aggregate<TSource, TAccumulate>(this IEnumerable<TSource> sequence, 
+    //        TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> func)
+    //    {
+    //        var sum = seed;
+    //        foreach (var item in sequence)
+    //            sum = func(sum, item);
+    //        return sum;
+    //    }
+
+    //    public static IOrderingImpl<T> MyOrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> comparer)
+    //        where TKey: IComparable<TKey>
+    //    {
+    //        return new MyOrderedEnumerable<T, TKey>(source, comparer);
+    //    }
+
+    //    public static IOrderingImpl<T> MyThenBy<T, TKey>(this IOrderingImpl<T> source, Func<T, TKey> comparer)
+    //        where TKey : IComparable<TKey>
+    //    {
+    //        return new MyOrderedEnumerable<T, TKey>(source, comparer);
+    //    }
+    //}
+    public static class MyLinqImplementation
     {
-        public static IEnumerable<T> Where<T>(
-            this IEnumerable<T> inputSequence, 
-            Func<T, bool> predicate)
+        //this keyword to know that it is a extension method
+        public static IEnumerable<T> Where<T>(this IEnumerable<T> source,Func<T,bool> predicate)
         {
-            foreach (T item in inputSequence)
+            foreach (T item in source)
+            {
                 if (predicate(item))
+                {
                     yield return item;
+                }
+            }
         }
 
-        public static IEnumerable<TResult> Select<TSource, TResult>(
-            this IEnumerable<TSource> inputSequence, 
-            Func<TSource, TResult> transform)
+        public static IEnumerable<TResult> Select<TSource,TResult>(this IEnumerable<TSource> source,Func<TSource,TResult> selector)
         {
-            foreach (TSource item in inputSequence)
-                yield return transform(item);
+            Console.WriteLine("Using my implementation");
+            foreach(TSource item in source)
+            {
+                yield return selector(item);
+            }
+            Console.WriteLine("Using my implementation");
         }
-
-        public static IEnumerable<TResult> Select<TSource, TResult>(
-            this IEnumerable<TSource> inputSequence,
-            Func<TSource, int, TResult> transform)
+        public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource,int , TResult> selector)
         {
             int index = 0;
-            foreach (TSource item in inputSequence)
-                yield return transform(item, index++);
-        }
-
-        public static bool Any<T>(this IEnumerable<T> sequence)
-        {
-            return sequence.GetEnumerator().MoveNext();
-        }
-        public static int Count<T>(this IEnumerable<T> sequence)
-        {
-            int count = 0;
-            foreach (var item in sequence)
-                count++;
-            return count;
-        }
-
-        public static bool Any<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
-        {
-            return sequence.Where(predicate).GetEnumerator().MoveNext();
-        }
-
-        public static int Count<T>(this IEnumerable<T> sequence, Func<T, bool> predicate)
-        {
-            return sequence.Where(predicate).Count();
-        }
-
-        public static int Sum(this IEnumerable<int> sequence)
-        {
-            var sum = 0;
-            foreach (var item in sequence)
-                sum += item;
-            return sum;
-        }
-
-        public static int Sum(this IEnumerable<int> sequence, int seed)
-        {
-            var sum = seed;
-            foreach (var item in sequence)
-                sum += item;
-            return sum;
-        }
-
-        public static int Aggregate(this IEnumerable<int> sequence, Func<int, int, int> func)
-        {
-            var sum = 0;
-            foreach (var item in sequence)
-                sum = func(sum, item);
-            return sum;
-        }
-
-        public static int Aggregate(this IEnumerable<int> sequence, int seed, Func<int, int, int> func)
-        {
-            var sum = seed;
-            foreach (var item in sequence)
-                sum = func(sum, item);
-            return sum;
-        }
-
-        public static TAccumulate Aggregate<TSource, TAccumulate>(this IEnumerable<TSource> sequence, Func<TAccumulate, TSource, TAccumulate> func)
-        {
-            var sum = default(TAccumulate);
-            foreach (var item in sequence)
-                sum = func(sum, item);
-            return sum;
-        }
-
-        public static TAccumulate Aggregate<TSource, TAccumulate>(this IEnumerable<TSource> sequence, 
-            TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> func)
-        {
-            var sum = seed;
-            foreach (var item in sequence)
-                sum = func(sum, item);
-            return sum;
-        }
-
-        public static IOrderingImpl<T> MyOrderBy<T, TKey>(this IEnumerable<T> source, Func<T, TKey> comparer)
-            where TKey: IComparable<TKey>
-        {
-            return new MyOrderedEnumerable<T, TKey>(source, comparer);
-        }
-
-        public static IOrderingImpl<T> MyThenBy<T, TKey>(this IOrderingImpl<T> source, Func<T, TKey> comparer)
-            where TKey : IComparable<TKey>
-        {
-            return new MyOrderedEnumerable<T, TKey>(source, comparer);
+            foreach (TSource item in source)
+            {
+                yield return selector(item,index++);
+            }
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
-            var sequence = SequenceFromConsole()
-                .MyOrderBy(s => s.Length)
-                .MyThenBy(s => s);
-            foreach (var item in sequence)
-                Console.WriteLine($"\t{item}");
-            return;
-            var sum = SequenceFromConsole().Select(s => int.Parse(s))
-                .Aggregate("Comma Separated", (existingString, item) => existingString + ", " + item);
-            Console.WriteLine(sum);
+            //var sequence = SequenceFromConsole()
+            //    .MyOrderBy(s => s.Length)
+            //    .MyThenBy(s => s);
+            //foreach (var item in sequence)
+            //    Console.WriteLine($"\t{item}");
+            //return;
+            //var sum = SequenceFromConsole().Select(s => int.Parse(s))
+            //    .Aggregate("Comma Separated", (existingString, item) => existingString + ", " + item);
+            //Console.WriteLine(sum);
 
-            return;
-            // Generate items using a factory:
-            var items = GenerateSequence(i => i.ToString());    
-            foreach (var item in items.Where(item => item.Length < 2))
+            //return;
+            //// Generate items using a factory:
+            //var items = GenerateSequence(i => i.ToString());    
+            //foreach (var item in items.Where(item => item.Length < 2))
+            //    Console.WriteLine(item);
+
+            //foreach (var item in items.Select((item, index) => 
+            //    new { index, item }))
+            //    Console.WriteLine(item);
+
+            //return;
+            //var moreItems = GenerateSequence(i => i);
+            //foreach (var item in moreItems)
+            //    Console.WriteLine(item);
+            var sequence = GenerateSequence()
+                .Where(n => n % 5 == 0)
+                .Select((n, index) =>
+                new
+                {
+                    index,
+                    formattedResult = n.ToString().PadLeft(20)
+                });
+            sequence = sequence.Where(s => true);
+            foreach(var item in sequence)
+            {
                 Console.WriteLine(item);
-
-            foreach (var item in items.Select((item, index) => 
-                new { index, item }))
-                Console.WriteLine(item);
-
-            return;
-            var moreItems = GenerateSequence(i => i);
-            foreach (var item in moreItems)
+            }
+            var sequence2 = GenerateNumbers().Where(n => n % 3 == 0);
+            foreach (var item in sequence2)
                 Console.WriteLine(item);
         }
 
-        // Core syntax for an enumerable:
-        private static IEnumerable<T> GenerateSequence<T>(Func<int, T> factory)
+        private static IEnumerable<string> GenerateSequence()
         {
             var i = 0;
             while (i++ < 100)
-                yield return factory(i);
+            {
+                yield return i.ToString();
+            }
+
         }
+        private static IEnumerable<int> GenerateNumbers()
+        {
+            var i = 0;
+            while (i++ < 100)
+            {
+                yield return i;
+            }
+
+        }
+        // Core syntax for an enumerable:
+        //private static IEnumerable<T> GenerateSequence<T>(Func<int, T> factory)
+        //{
+        //    var i = 0;
+        //    while (i++ < 100)
+        //        yield return factory(i);
+        //}
 
         private static IEnumerable<string> SequenceFromConsole()
         {
